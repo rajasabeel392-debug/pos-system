@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Add Return Items - POS System{% endblock %}
+{% block page_title %}Add Return Items{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-undo"></i> Return Items - {{ return_obj.return_number }}</h5>
+                <small class="text-muted">Original Sale: {{ return_obj.sale.invoice_number }}</small>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Product</label>
+                            <select name="product_id" class="form-select" required>
+                                <option value="">Select Product</option>
+                                {% for item in available_products %}
+                                <option value="{{ item.product.id }}" data-max="{{ item.max_quantity }}" data-price="{{ item.unit_price }}">
+                                    {{ item.product.name }} ({{ item.product.sku }}) - Max: {{ item.max_quantity }} units - Price: ₹{{ "%.2f"|format(item.unit_price) }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" name="quantity" class="form-control" min="1" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary w-100">Add Item</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total Price</th>
+                                <th>GST Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in return_items %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>₹{{ "%.2f"|format(item.unit_price) }}</td>
+                                <td>₹{{ "%.2f"|format(item.total_price) }}</td>
+                                <td>{{ item.gst_rate }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-calculator"></i> Return Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-6">Subtotal:</div>
+                    <div class="col-6 text-end">₹{{ "%.2f"|format(subtotal) }}</div>
+                </div>
+                {% if return_obj.sale.is_gst_invoice %}
+                <div class="row mb-2">
+                    <div class="col-6">GST:</div>
+                    <div class="col-6 text-end">₹{{ "%.2f"|format(gst_amount) }}</div>
+                </div>
+                {% endif %}
+                <hr>
+                <div class="row">
+                    <div class="col-6"><strong>Total:</strong></div>
+                    <div class="col-6 text-end"><strong>₹{{ "%.2f"|format(total_amount) }}</strong></div>
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <strong>Return Reason:</strong><br>
+                    <small class="text-muted">{{ return_obj.reason }}</small>
+                </div>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('generate_return_receipt', return_id=return_obj.id) }}" class="btn btn-success">
+                        <i class="fas fa-file-invoice"></i> Generate Return Receipt
+                    </a>
+                    <a href="{{ url_for('returns') }}" class="btn btn-secondary">
+                        <i class="fas fa-list"></i> Back to Returns
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Update max quantity when product is selected
+document.querySelector('select[name="product_id"]').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const maxQuantity = selectedOption.getAttribute('data-max');
+    const quantityInput = document.querySelector('input[name="quantity"]');
+    
+    if (maxQuantity) {
+        quantityInput.max = maxQuantity;
+        quantityInput.placeholder = `Max: ${maxQuantity}`;
+    } else {
+        quantityInput.max = '';
+        quantityInput.placeholder = '';
+    }
+});
+</script>
+{% endblock %}

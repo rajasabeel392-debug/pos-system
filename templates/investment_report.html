@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Investment Report - POS System{% endblock %}
+{% block page_title %}Investment Report{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-shopping-cart fa-2x text-primary mb-3"></i>
+                <h5 class="card-title">Total Investment</h5>
+                <h2 class="text-primary">₹{{ "%.2f"|format(total_purchases) }}</h2>
+                <p class="text-muted">Total purchases/investments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
+                <h5 class="card-title">Total Sales</h5>
+                <h2 class="text-success">₹{{ "%.2f"|format(total_sales) }}</h2>
+                <p class="text-muted">Total revenue generated</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-balance-scale fa-2x {% if profit_loss >= 0 %}text-success{% else %}text-danger{% endif %} mb-3"></i>
+                <h5 class="card-title">Profit/Loss</h5>
+                <h2 class="{% if profit_loss >= 0 %}text-success{% else %}text-danger{% endif %}">
+                    ₹{{ "%.2f"|format(profit_loss) }}
+                </h2>
+                <p class="text-muted">
+                    {% if profit_loss >= 0 %}Profit{% else %}Loss{% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-pie"></i> Investment Breakdown</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h3>₹{{ "%.2f"|format(total_purchases) }}</h3>
+                    <p class="text-muted">Total Investment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar"></i> Sales Performance</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h3>₹{{ "%.2f"|format(total_sales) }}</h3>
+                    <p class="text-muted">Total Sales</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Investment Analysis:</h6>
+                        <ul>
+                            <li>Total Investment: ₹{{ "%.2f"|format(total_purchases) }}</li>
+                            <li>Total Sales: ₹{{ "%.2f"|format(total_sales) }}</li>
+                            <li>ROI: {{ "%.2f"|format((total_sales - total_purchases) / total_purchases * 100) if total_purchases > 0 else 0 }}%</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Performance:</h6>
+                        <ul>
+                            <li>Status: {% if profit_loss >= 0 %}Profitable{% else %}Loss Making{% endif %}</li>
+                            <li>Net Result: ₹{{ "%.2f"|format(profit_loss) }}</li>
+                            <li>Margin: {{ "%.2f"|format(profit_loss / total_sales * 100) if total_sales > 0 else 0 }}%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

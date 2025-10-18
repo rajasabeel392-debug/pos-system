@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Returns - POS System{% endblock %}
+{% block page_title %}Returns{% endblock %}
+
+{% block page_actions %}
+<a href="{{ url_for('add_return') }}" class="btn btn-primary">
+    <i class="fas fa-undo"></i> New Return
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-undo"></i> Returns List</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Return No.</th>
+                        <th>Date</th>
+                        <th>Original Sale</th>
+                        <th>Customer</th>
+                        <th>Van</th>
+                        <th>Total Amount</th>
+                        <th>GST Amount</th>
+                        <th>Final Amount</th>
+                        <th>Reason</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for return in returns %}
+                    <tr>
+                        <td><strong>{{ return.return_number }}</strong></td>
+                        <td>{{ return.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ return.sale.invoice_number }}</td>
+                        <td>{{ return.customer.name if return.customer else 'Walk-in' }}</td>
+                        <td>{{ return.van.name if return.van else 'N/A' }}</td>
+                        <td>₹{{ "%.2f"|format(return.total_amount) }}</td>
+                        <td>₹{{ "%.2f"|format(return.gst_amount) }}</td>
+                        <td>₹{{ "%.2f"|format(return.final_amount) }}</td>
+                        <td>{{ return.reason[:50] }}{% if return.reason|length > 50 %}...{% endif %}</td>
+                        <td>
+                            <a href="{{ url_for('generate_return_receipt', return_id=return.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-file-invoice"></i> Receipt
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">
+                            <i class="fas fa-undo fa-2x mb-3"></i><br>
+                            No returns found. <a href="{{ url_for('add_return') }}">Create your first return</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Excel Import - POS System{% endblock %}
+{% block page_title %}Excel Import{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-file-excel"></i> Import Data from Excel</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.file.label(class="form-label") }}
+                        {{ form.file(class="form-control") }}
+                        {% if form.file.errors %}
+                            <div class="text-danger">
+                                {% for error in form.file.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">Select an Excel file (.xlsx or .xls) to import</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.import_type.label(class="form-label") }}
+                        {{ form.import_type(class="form-select") }}
+                        {% if form.import_type.errors %}
+                            <div class="text-danger">
+                                {% for error in form.import_type.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-info-circle"></i> Import Instructions</h6>
+            </div>
+            <div class="card-body">
+                <h6>Excel File Format Requirements:</h6>
+                
+                <div class="mb-3">
+                    <strong>Products:</strong>
+                    <ul class="small">
+                        <li><code>name</code> - Product name (required)</li>
+                        <li><code>sku</code> - Product SKU (required)</li>
+                        <li><code>category</code> - Product category (required)</li>
+                        <li><code>cost_price</code> - Cost price (required)</li>
+                        <li><code>selling_price</code> - Selling price (required)</li>
+                        <li><code>stock_quantity</code> - Stock quantity (optional)</li>
+                        <li><code>min_stock_level</code> - Min stock level (optional)</li>
+                        <li><code>gst_rate</code> - GST rate % (optional)</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Customers:</strong>
+                    <ul class="small">
+                        <li><code>name</code> - Customer name (required)</li>
+                        <li><code>phone</code> - Phone number (optional)</li>
+                        <li><code>email</code> - Email address (optional)</li>
+                        <li><code>address</code> - Address (optional)</li>
+                        <li><code>gst_number</code> - GST number (optional)</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Suppliers:</strong>
+                    <ul class="small">
+                        <li><code>name</code> - Supplier name (required)</li>
+                        <li><code>contact_person</code> - Contact person (optional)</li>
+                        <li><code>phone</code> - Phone number (optional)</li>
+                        <li><code>email</code> - Email address (optional)</li>
+                        <li><code>address</code> - Address (optional)</li>
+                        <li><code>gst_number</code> - GST number (optional)</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Vans:</strong>
+                    <ul class="small">
+                        <li><code>name</code> - Van name (required)</li>
+                        <li><code>driver_name</code> - Driver name (required)</li>
+                        <li><code>phone</code> - Phone number (required)</li>
+                        <li><code>license_number</code> - License number (required)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6><i class="fas fa-download"></i> Sample Files</h6>
+            </div>
+            <div class="card-body">
+                <p class="small">Download sample Excel files to see the correct format:</p>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('download_sample', file_type='products') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-download"></i> Products Sample
+                    </a>
+                    <a href="{{ url_for('download_sample', file_type='customers') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-download"></i> Customers Sample
+                    </a>
+                    <a href="{{ url_for('download_sample', file_type='suppliers') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-download"></i> Suppliers Sample
+                    </a>
+                    <a href="{{ url_for('download_sample', file_type='vans') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-download"></i> Vans Sample
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

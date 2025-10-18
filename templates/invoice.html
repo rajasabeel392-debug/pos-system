@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Invoice - POS System{% endblock %}
+{% block page_title %}Invoice{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h3><i class="fas fa-store"></i> POS System</h3>
+                        <p class="text-muted">Wholesale Business</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <h4>{% if sale.is_gst_invoice %}GST Invoice{% else %}Bill{% endif %}</h4>
+                        <p><strong>Invoice No:</strong> {{ sale.invoice_number }}</p>
+                        <p><strong>Date:</strong> {{ sale.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6>Bill To:</h6>
+                        {% if sale.customer %}
+                        <p>
+                            <strong>{{ sale.customer.name }}</strong><br>
+                            {% if sale.customer.address %}{{ sale.customer.address }}<br>{% endif %}
+                            {% if sale.customer.phone %}Phone: {{ sale.customer.phone }}<br>{% endif %}
+                            {% if sale.customer.gst_number %}GST: {{ sale.customer.gst_number }}{% endif %}
+                        </p>
+                        {% else %}
+                        <p><strong>Walk-in Customer</strong></p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Sold By:</h6>
+                        {% if sale.van %}
+                        <p>
+                            <strong>{{ sale.van.name }}</strong><br>
+                            {% if sale.van.driver_name %}Driver: {{ sale.van.driver_name }}<br>{% endif %}
+                            {% if sale.van.phone %}Phone: {{ sale.van.phone }}{% endif %}
+                        </p>
+                        {% else %}
+                        <p><strong>Store Sale</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                                {% if sale.is_gst_invoice %}
+                                <th>GST Rate</th>
+                                <th>GST Amount</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in sale_items %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>₹{{ "%.2f"|format(item.unit_price) }}</td>
+                                <td>₹{{ "%.2f"|format(item.total_price) }}</td>
+                                {% if sale.is_gst_invoice %}
+                                <td>{{ item.gst_rate }}%</td>
+                                <td>₹{{ "%.2f"|format(item.total_price * item.gst_rate / 100) }}</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="{% if sale.is_gst_invoice %}5{% else %}4{% endif %}" class="text-end"><strong>Subtotal:</strong></td>
+                                <td><strong>₹{{ "%.2f"|format(sale.total_amount) }}</strong></td>
+                                {% if sale.is_gst_invoice %}
+                                <td></td>
+                                {% endif %}
+                            </tr>
+                            {% if sale.is_gst_invoice %}
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>GST Amount:</strong></td>
+                                <td><strong>₹{{ "%.2f"|format(sale.gst_amount) }}</strong></td>
+                            </tr>
+                            {% endif %}
+                            <tr class="table-primary">
+                                <td colspan="{% if sale.is_gst_invoice %}6{% else %}5{% endif %}" class="text-end"><strong>Total Amount:</strong></td>
+                                <td><strong>₹{{ "%.2f"|format(sale.final_amount) }}</strong></td>
+                                {% if sale.is_gst_invoice %}
+                                <td></td>
+                                {% endif %}
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p><strong>Payment Method:</strong> {{ sale.payment_method.title() }}</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button onclick="window.print()" class="btn btn-primary">
+                            <i class="fas fa-print"></i> Print Invoice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    .btn, .sidebar, .main-content .d-flex {
+        display: none !important;
+    }
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
+</style>
+{% endblock %}

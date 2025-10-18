@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Sales - POS System{% endblock %}
+{% block page_title %}Sales{% endblock %}
+
+{% block page_actions %}
+<a href="{{ url_for('add_sale') }}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> New Sale
+</a>
+<a href="{{ url_for('export_excel', report_type='sales') }}" class="btn btn-success">
+    <i class="fas fa-file-excel"></i> Export Excel
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-shopping-cart"></i> Sales List</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Invoice No.</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Van</th>
+                        <th>Total Amount</th>
+                        <th>GST Amount</th>
+                        <th>Final Amount</th>
+                        <th>Payment</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.invoice_number }}</td>
+                        <td>{{ sale.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ sale.customer.name if sale.customer else 'Walk-in' }}</td>
+                        <td>{{ sale.van.name if sale.van else 'N/A' }}</td>
+                        <td>₹{{ "%.2f"|format(sale.total_amount) }}</td>
+                        <td>₹{{ "%.2f"|format(sale.gst_amount) }}</td>
+                        <td>₹{{ "%.2f"|format(sale.final_amount) }}</td>
+                        <td>{{ sale.payment_method.title() }}</td>
+                        <td>
+                            <span class="badge {% if sale.is_gst_invoice %}bg-success{% else %}bg-info{% endif %}">
+                                {% if sale.is_gst_invoice %}GST{% else %}Non-GST{% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('generate_invoice', sale_id=sale.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-file-invoice"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

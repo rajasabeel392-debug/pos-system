@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - POS System{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-box fa-2x text-primary mb-3"></i>
+                <h5 class="card-title">Total Products</h5>
+                <h2 class="text-primary">{{ total_products }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                <h5 class="card-title">Low Stock</h5>
+                <h2 class="text-warning">{{ low_stock_products }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-rupee-sign fa-2x text-success mb-3"></i>
+                <h5 class="card-title">Today's Sales</h5>
+                <h2 class="text-success">₹{{ "%.2f"|format(total_sales_today) }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-chart-line fa-2x text-info mb-3"></i>
+                <h5 class="card-title">Quick Actions</h5>
+                <div class="btn-group-vertical w-100">
+                    <a href="{{ url_for('add_sale') }}" class="btn btn-primary btn-sm mb-1">New Sale</a>
+                    <a href="{{ url_for('add_load_form') }}" class="btn btn-success btn-sm">Load Form</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-history"></i> Recent Sales</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_sales %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sale in recent_sales %}
+                            <tr>
+                                <td>{{ sale.invoice_number }}</td>
+                                <td>{{ sale.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>₹{{ "%.2f"|format(sale.final_amount) }}</td>
+                                <td>{{ sale.payment_method.title() }}</td>
+                                <td>
+                                    <a href="{{ url_for('generate_invoice', sale_id=sale.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No recent sales found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-tools"></i> Quick Reports</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('stock_report') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-chart-bar"></i> Stock Report
+                    </a>
+                    <a href="{{ url_for('monthly_stock_report') }}" class="btn btn-outline-success">
+                        <i class="fas fa-calendar-alt"></i> Monthly Stock
+                    </a>
+                    <a href="{{ url_for('van_sales_monthly') }}" class="btn btn-outline-info">
+                        <i class="fas fa-truck"></i> Van Sales
+                    </a>
+                    <a href="{{ url_for('investment_report') }}" class="btn btn-outline-warning">
+                        <i class="fas fa-chart-line"></i> Investment Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
