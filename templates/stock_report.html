@@ -38,9 +38,9 @@
                         <td>{{ product.category }}</td>
                         <td>{{ product.stock_quantity }}</td>
                         <td>{{ product.min_stock_level }}</td>
-                        <td>₹{{ "%.2f"|format(product.cost_price) }}</td>
-                        <td>₹{{ "%.2f"|format(product.selling_price) }}</td>
-                        <td>₹{{ "%.2f"|format(product.stock_quantity * product.cost_price) }}</td>
+                        <td>Rs.{{ "%.2f"|format(product.cost_price) }}</td>
+                        <td>Rs.{{ "%.2f"|format(product.selling_price) }}</td>
+                        <td>Rs.{{ "%.2f"|format(product.stock_quantity * product.cost_price) }}</td>
                         <td>
                             {% if product.stock_quantity <= product.min_stock_level %}
                                 <span class="badge bg-warning">Low Stock</span>

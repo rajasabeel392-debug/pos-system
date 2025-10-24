@@ -34,9 +34,9 @@
                     {% for van_sale in van_sales %}
                     <tr>
                         <td>{{ van_sale.name }}</td>
-                        <td>₹{{ "%.2f"|format(van_sale.total_sales) }}</td>
+                        <td>Rs.{{ "%.2f"|format(van_sale.total_sales) }}</td>
                         <td>{{ van_sale.total_orders }}</td>
-                        <td>₹{{ "%.2f"|format(van_sale.total_sales / van_sale.total_orders) if van_sale.total_orders > 0 else 0 }}</td>
+                        <td>Rs.{{ "%.2f"|format(van_sale.total_sales / van_sale.total_orders) if van_sale.total_orders > 0 else 0 }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

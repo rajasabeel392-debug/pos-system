@@ -33,7 +33,7 @@ A comprehensive Point of Sale (POS) system designed for wholesale businesses wit
 - Point of sale interface
 - Customer management
 - Van-wise sales tracking
-- Multiple payment methods (Cash, Card, UPI)
+- Multiple payment methods (Cash, Card)
 - Invoice generation (GST and Non-GST)
 - Sales history and reporting
 

@@ -40,8 +40,8 @@
                                 {{ product.stock_quantity }}
                             </span>
                         </td>
-                        <td>₹{{ "%.2f"|format(product.cost_price) }}</td>
-                        <td>₹{{ "%.2f"|format(product.selling_price) }}</td>
+                        <td>Rs.{{ "%.2f"|format(product.cost_price) }}</td>
+                        <td>Rs.{{ "%.2f"|format(product.selling_price) }}</td>
                         <td>{{ product.gst_rate }}%</td>
                         <td>
                             {% if product.stock_quantity <= product.min_stock_level %}

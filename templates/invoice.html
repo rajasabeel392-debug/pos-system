@@ -69,11 +69,11 @@
                                 <td>{{ loop.index }}</td>
                                 <td>{{ item.product.name }}</td>
                                 <td>{{ item.quantity }}</td>
-                                <td>₹{{ "%.2f"|format(item.unit_price) }}</td>
-                                <td>₹{{ "%.2f"|format(item.total_price) }}</td>
+                                <td>Rs.{{ "%.2f"|format(item.unit_price) }}</td>
+                                <td>Rs.{{ "%.2f"|format(item.total_price) }}</td>
                                 {% if sale.is_gst_invoice %}
                                 <td>{{ item.gst_rate }}%</td>
-                                <td>₹{{ "%.2f"|format(item.total_price * item.gst_rate / 100) }}</td>
+                                <td>Rs.{{ "%.2f"|format(item.total_price * item.gst_rate / 100) }}</td>
                                 {% endif %}
                             </tr>
                             {% endfor %}
@@ -81,7 +81,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="{% if sale.is_gst_invoice %}5{% else %}4{% endif %}" class="text-end"><strong>Subtotal:</strong></td>
-                                <td><strong>₹{{ "%.2f"|format(sale.total_amount) }}</strong></td>
+                                <td><strong>Rs.{{ "%.2f"|format(sale.total_amount) }}</strong></td>
                                 {% if sale.is_gst_invoice %}
                                 <td></td>
                                 {% endif %}
@@ -89,12 +89,12 @@
                             {% if sale.is_gst_invoice %}
                             <tr>
                                 <td colspan="6" class="text-end"><strong>GST Amount:</strong></td>
-                                <td><strong>₹{{ "%.2f"|format(sale.gst_amount) }}</strong></td>
+                                <td><strong>Rs.{{ "%.2f"|format(sale.gst_amount) }}</strong></td>
                             </tr>
                             {% endif %}
                             <tr class="table-primary">
                                 <td colspan="{% if sale.is_gst_invoice %}6{% else %}5{% endif %}" class="text-end"><strong>Total Amount:</strong></td>
-                                <td><strong>₹{{ "%.2f"|format(sale.final_amount) }}</strong></td>
+                                <td><strong>Rs.{{ "%.2f"|format(sale.final_amount) }}</strong></td>
                                 {% if sale.is_gst_invoice %}
                                 <td></td>
                                 {% endif %}

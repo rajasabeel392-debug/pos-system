@@ -212,7 +212,7 @@ class LoadFormForm(FlaskForm):
 class SaleForm(FlaskForm):
     customer_id = SelectField('Customer', coerce=int)
     van_id = SelectField('Van', coerce=int)
-    payment_method = SelectField('Payment Method', choices=[('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI')], validators=[DataRequired()])
+    payment_method = SelectField('Payment Method', choices=[('cash', 'Cash'), ('card', 'Card')], validators=[DataRequired()])
     is_gst_invoice = SelectField('Invoice Type', choices=[('true', 'GST Invoice'), ('false', 'Non-GST Invoice')], validators=[DataRequired()])
     submit = SubmitField('Create Sale')
 

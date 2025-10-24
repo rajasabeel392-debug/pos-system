@@ -39,9 +39,9 @@
                         <td>{{ return.sale.invoice_number }}</td>
                         <td>{{ return.customer.name if return.customer else 'Walk-in' }}</td>
                         <td>{{ return.van.name if return.van else 'N/A' }}</td>
-                        <td>₹{{ "%.2f"|format(return.total_amount) }}</td>
-                        <td>₹{{ "%.2f"|format(return.gst_amount) }}</td>
-                        <td>₹{{ "%.2f"|format(return.final_amount) }}</td>
+                        <td>Rs.{{ "%.2f"|format(return.total_amount) }}</td>
+                        <td>Rs.{{ "%.2f"|format(return.gst_amount) }}</td>
+                        <td>Rs.{{ "%.2f"|format(return.final_amount) }}</td>
                         <td>{{ return.reason[:50] }}{% if return.reason|length > 50 %}...{% endif %}</td>
                         <td>
                             <a href="{{ url_for('generate_return_receipt', return_id=return.id) }}" class="btn btn-sm btn-outline-primary">

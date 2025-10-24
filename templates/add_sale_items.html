@@ -49,8 +49,8 @@
                             <tr>
                                 <td>{{ item.product.name }}</td>
                                 <td>{{ item.quantity }}</td>
-                                <td>₹{{ "%.2f"|format(item.unit_price) }}</td>
-                                <td>₹{{ "%.2f"|format(item.total_price) }}</td>
+                                <td>Rs.{{ "%.2f"|format(item.unit_price) }}</td>
+                                <td>Rs.{{ "%.2f"|format(item.total_price) }}</td>
                                 <td>{{ item.gst_rate }}%</td>
                             </tr>
                             {% endfor %}
@@ -68,18 +68,18 @@
             <div class="card-body">
                 <div class="row mb-2">
                     <div class="col-6">Subtotal:</div>
-                    <div class="col-6 text-end">₹{{ "%.2f"|format(subtotal) }}</div>
+                    <div class="col-6 text-end">Rs.{{ "%.2f"|format(subtotal) }}</div>
                 </div>
                 {% if sale.is_gst_invoice %}
                 <div class="row mb-2">
                     <div class="col-6">GST:</div>
-                    <div class="col-6 text-end">₹{{ "%.2f"|format(gst_amount) }}</div>
+                    <div class="col-6 text-end">Rs.{{ "%.2f"|format(gst_amount) }}</div>
                 </div>
                 {% endif %}
                 <hr>
                 <div class="row">
                     <div class="col-6"><strong>Total:</strong></div>
-                    <div class="col-6 text-end"><strong>₹{{ "%.2f"|format(total_amount) }}</strong></div>
+                    <div class="col-6 text-end"><strong>Rs.{{ "%.2f"|format(total_amount) }}</strong></div>
                 </div>
                 <hr>
                 <div class="d-grid gap-2">
